@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wall -Wextra -fPIC -O3 -rdynamic CMakeFiles/main.dir/src/igg_image/main.cpp.o -o ../bin/main  -Wl,-rpath,"/home/syrmia/modern c++/domaci/igg_image/lib" ../lib/libimageLib.a ../lib/libio_tools.so 

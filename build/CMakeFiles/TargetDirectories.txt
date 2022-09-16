@@ -1,0 +1,6 @@
+/home/syrmia/modern c++/domaci/igg_image/build/CMakeFiles/rebuild_cache.dir
+/home/syrmia/modern c++/domaci/igg_image/build/CMakeFiles/edit_cache.dir
+/home/syrmia/modern c++/domaci/igg_image/build/CMakeFiles/main.dir
+/home/syrmia/modern c++/domaci/igg_image/build/CMakeFiles/imageLib.dir
+/home/syrmia/modern c++/domaci/igg_image/build/src/CMakeFiles/rebuild_cache.dir
+/home/syrmia/modern c++/domaci/igg_image/build/src/CMakeFiles/edit_cache.dir
