@@ -113,10 +113,8 @@ namespace igg
     std::vector<float> Image::ComputeHistogram(int bins)
     {
         float interval = static_cast<float> (255) /static_cast<float> (bins);
-        cout<< "interval je" << interval <<endl;
+        cout<< "interval je " << interval <<endl;
         float min, max;
-        int bin = 0;
-        float binPercent;
         std::vector<float> vec(bins);
         float sum = 0;
         bool fileFromPgm = this->FillFromPgm("../data/lena.ascii.pgm");
@@ -124,24 +122,26 @@ namespace igg
         if (fileFromPgm == true)
         {
             int sizePicture = this->data_.size();
-            for (int i = 0; i < bins; i++)
+            for (int j = 0; j < sizePicture; j++)
             {
-                max = (interval * static_cast<float> (i)) + interval;
-                min = interval * static_cast<float>  (i);
-                cout << "min je: "<< min << "  Max je:"<< max << endl;
-                for (int j = 0; j < sizePicture; j++)
+                for (int i = 0; i < bins; i++)
                 {
+                    max = (interval * static_cast<float> (i)) + interval;
+                    min = interval * static_cast<float>  (i);
                     if (min <= static_cast<float> (this->data_[j]) && static_cast<float> (this->data_[j]) < max)
                     {
-                        bin++;
+                        vec[i] +=1 ;
                     }
                 }
-                binPercent = static_cast<float> (bin) / static_cast<float> (sizePicture);
-                vec[i] = binPercent;
-                sum = sum + vec[i];
-                bin = 0;
             }
-            cout<< "suma svih elemenata vektora je  " << sum <<endl;
+            for (int i = 0; i < bins; i++)
+            {
+                vec[i] = vec[i] / static_cast<float> (sizePicture);
+                sum = sum + vec[i];
+
+            }
+            
+            cout<< "suma svih elemenata vektora je " << sum <<endl;
             return vec;
         }
         return vec;
@@ -149,13 +149,27 @@ namespace igg
 
     void Image::DownScale(int scale)
     {
-        if(this->cols_ % scale == 0 && this->rows_ % scale == 0)
+        int k = 0; 
+        std::vector<float> vec(scale * scale);
+        if(this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
         {
-
+            for (int i = 0; i < this->rows_; i++)
+            {
+                for (int j = 0; j < this->cols_; j++)
+                {
+                    if (k < scale)                    
+                    {
+                        vec[k] = this->at(i,j);
+                        k++;
+                    }
+                    if((j + 1) % scale == 0)
+                    {
+                        
+                    }
+                }
+            }
         }
-
     }
-
     // bool ReadFromDisk(const std::string& file_name)
     // {
     //     string my_line;
