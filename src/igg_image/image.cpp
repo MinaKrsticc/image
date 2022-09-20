@@ -112,8 +112,8 @@ namespace igg
 
     std::vector<float> Image::ComputeHistogram(int bins)
     {
-        float interval = static_cast<float> (255) /static_cast<float> (bins);
-        cout<< "interval je " << interval <<endl;
+        float interval = static_cast<float>(255) / static_cast<float>(bins);
+        cout << "interval je " << interval << endl;
         float min, max;
         std::vector<float> vec(bins);
         float sum = 0;
@@ -126,22 +126,21 @@ namespace igg
             {
                 for (int i = 0; i < bins; i++)
                 {
-                    max = (interval * static_cast<float> (i)) + interval;
-                    min = interval * static_cast<float>  (i);
-                    if (min <= static_cast<float> (this->data_[j]) && static_cast<float> (this->data_[j]) < max)
+                    max = (interval * static_cast<float>(i)) + interval;
+                    min = interval * static_cast<float>(i);
+                    if (min <= static_cast<float>(this->data_[j]) && static_cast<float>(this->data_[j]) < max)
                     {
-                        vec[i] +=1 ;
+                        vec[i] += 1;
                     }
                 }
             }
             for (int i = 0; i < bins; i++)
             {
-                vec[i] = vec[i] / static_cast<float> (sizePicture);
+                vec[i] = vec[i] / static_cast<float>(sizePicture);
                 sum = sum + vec[i];
-
             }
-            
-            cout<< "suma svih elemenata vektora je " << sum <<endl;
+
+            cout << "suma svih elemenata vektora je " << sum << endl;
             return vec;
         }
         return vec;
@@ -149,24 +148,33 @@ namespace igg
 
     void Image::DownScale(int scale)
     {
-        int k = 0; 
+        int i = 0;
+        int p = 0;
+        float mat[scale][scale];
+        float pom = 0;
         std::vector<float> vec(scale * scale);
-        if(this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
+        if (this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
         {
-            for (int i = 0; i < this->rows_; i++)
+            while (i < this->data_.size())
             {
-                for (int j = 0; j < this->cols_; j++)
+                for (int j = 0; j < scale; j++)
                 {
-                    if (k < scale)                    
+                    for (int k = 0; k < scale; k++)
                     {
-                        vec[k] = this->at(i,j);
-                        k++;
-                    }
-                    if((j + 1) % scale == 0)
-                    {
-                        
+                        mat[j][k] = this->at(j,k);
+                        i++;
                     }
                 }
+                for (int j = 0; j < scale; j++)
+                {
+                    for (int k = 0; k < scale; k++)
+                    {
+                        pom = pom + mat[j][k];
+                    }
+                }
+                int prosek = pom / (scale * scale);
+                vec[p] = prosek;
+                p++;
             }
         }
     }
