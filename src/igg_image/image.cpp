@@ -148,35 +148,33 @@ namespace igg
 
     void Image::DownScale(int scale)
     {
-        int i = 0;
         int p = 0;
         float mat[scale][scale];
         float pom = 0;
+        int step = 0;
         std::vector<float> vec(scale * scale);
         if (this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
         {
-            while (i < this->data_.size())
+            while (step <= this->rows_ - scale )
             {
-                for (int j = 0; j < scale; j++)
+                for (int j = step; j < scale ; j++)
                 {
-                    for (int k = 0; k < scale; k++)
+                    for (int k = 0; k < scale ; k++)
                     {
-                        mat[j][k] = this->at(j,k);
-                        i++;
-                    }
-                }
-                for (int j = 0; j < scale; j++)
-                {
-                    for (int k = 0; k < scale; k++)
-                    {
-                        pom = pom + mat[j][k];
+                        pom = pom + this->at(j,k); //treba da se nesto uradi , da se
                     }
                 }
                 int prosek = pom / (scale * scale);
                 vec[p] = prosek;
                 p++;
+                step = step + scale;
             }
+            // napraviti da se pomera i duz reda
         }
+    }
+    void Image::UpScale(int scale)
+    {
+
     }
     // bool ReadFromDisk(const std::string& file_name)
     // {
