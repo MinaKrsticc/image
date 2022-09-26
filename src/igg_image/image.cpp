@@ -149,29 +149,36 @@ namespace igg
     void Image::DownScale(int scale)
     {
         int p = 0;
-        float mat[scale][scale];
         float pom = 0;
         int step = 0;
         std::vector<float> vec(scale * scale);
         if (this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
-        {
-            while (step <= this->rows_ - scale )
+        {   
+            for (int i = 0; i < this->rows_; i+=scale)
             {
-                for (int j = step; j < scale ; j++)
+            for (int j = 0; j < this->cols_; j++)
+            {
+                if (i == step || j == step) 
                 {
-                    for (int k = 0; k < scale ; k++)
+                    for (int im = i; im < i + step ; im++)
                     {
-                        pom = pom + this->at(j,k); //treba da se nesto uradi , da se
+                        for (int jm = j; jm < j + step ; jm++)
+                        {
+                            pom = pom + this->at(im,jm); //treba da se nesto uradi , da se pikseli obradjuju
+                        }
                     }
-                }
-                int prosek = pom / (scale * scale);
-                vec[p] = prosek;
-                p++;
-                step = step + scale;
+                    int prosek = pom / (scale * scale);
+                    vec[p] = prosek;
+                    p++;
+                    if (step + scale < this->rows_)
+                    {
+                    step = step + scale;
+                    }                        
+                } 
             }
-            // napraviti da se pomera i duz reda
         }
     }
+
     void Image::UpScale(int scale)
     {
 
