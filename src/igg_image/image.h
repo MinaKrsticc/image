@@ -4,6 +4,7 @@
 namespace igg {
 
 class Image {
+
  public:
  Image();
  Image(int row, int cols);
@@ -17,6 +18,7 @@ class Image {
  std::vector<float> ComputeHistogram(int bins);
  void DownScale(int scale);
  void UpScale(int scale);
+ void Invert();
  //Image operator=(const Image& img);
 
 // Image operator+(const Image& img);

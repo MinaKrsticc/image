@@ -28,10 +28,23 @@ int main()
     // }
 
     bool read = true;
+    // const string fileName = "../data/lena.ascii.pgm";
+    // read = image.FillFromPgm(fileName);
+    // cout <<"read koji je bool kazuje da li je lepo procitano " << read << endl;
+    // image.UpScale(3);
+    // image.WriteToPgm("../data/lena.asciiUpScale.pgm");
+
+    // const string fileName = "../data/lena.ascii.pgm";
+    // read = image.FillFromPgm(fileName);
+    // cout <<"read koji je bool kazuje da li je lepo procitano " << read << endl;
+    // image.DownScale(2);
+    // image.WriteToPgm("../data/lena.asciiDownScale.pgm");
+
     const string fileName = "../data/lena.ascii.pgm";
     read = image.FillFromPgm(fileName);
     cout <<"read koji je bool kazuje da li je lepo procitano " << read << endl;
-    image.UpScale(2);
-    image.WriteToPgm("../data/lena.asciiUpScale.pgm");
+    image.Invert();
+    image.WriteToPgm("../data/lena.asciiInvert_mina3.pgm");
+
     return 0;
 }

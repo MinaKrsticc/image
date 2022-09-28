@@ -6,6 +6,8 @@
 #include "image.h"
 #include "io_tools.h"
 
+#define abs(x) x > 0 ? x : - x;
+
 using namespace std;
 using namespace igg::io_tools;
 namespace igg
@@ -148,36 +150,35 @@ namespace igg
         
     void Image::DownScale(int scale)
     {
-        int p = 0;
-        float pom = 0;
-        int step = 0;
-        std::vector<float> vec(scale * scale);
-        if (this->cols_ % scale == 0 && this->rows_ % scale == 0 && this->cols_ == this->rows_)
-        {   
-            for (int i = 0; i < this->rows_; i+=scale)
+        int smallRow = this->rows_ / scale;
+        int smallCols = this->cols_ / scale;
+        std::vector<int> vec((smallRow) * (smallCols));
+        int prosek;
+
+        for (int im = 0; im < smallRow; im++)
+        {
+            for (int jm = 0; jm < smallCols; jm++)
             {
-                for (int j = 0; j < this->cols_; j++)
+                int indexi = im * scale;
+                int indexj = jm * scale;
+                int sum = 0;
+                while (indexi < ((im * scale) + scale))
                 {
-                    if (i == step || j == step) 
+                    while (indexj < ((jm + 1) * scale))
                     {
-                        for (int im = i; im < i + step ; im++)
-                        {
-                            for (int jm = j; jm < j + step ; jm++)
-                            {
-                                pom = pom + this->at(im,jm); //treba da se nesto uradi, da se pikseli obradjuju
-                            }
-                        }
-                        int prosek = pom / (scale * scale);
-                        vec[p] = prosek;
-                        p++;
-                        if (step + scale < this->rows_)
-                        {
-                        step = step + scale;
-                        }                        
-                    } 
+                        sum = sum + this->at(indexi, indexj);
+                        indexj++;
+                    }
+                    indexj = jm * scale;
+                    indexi++;
                 }
+                prosek = sum / (scale * scale);
+                vec[im * smallCols + jm] = prosek;
             }
         }
+        this->rows_ = smallRow;
+        this->cols_ = smallCols;
+        this->data_ = vec;
     }
 
     void Image::UpScale(int scale)
@@ -206,6 +207,60 @@ namespace igg
         this->rows_ = big_cols_;
         this->cols_ = big_cols_;
         this->data_ = vec;
+    }
+
+    void Image::Invert()
+    {
+        int pom;
+        // for (int i = 0; i < this->rows_; i++)
+        // {
+        //     for (int j = 0; j < this->cols_; j++)
+        //     {
+        //         if (this->data_[i * this->cols_ + j] > 128)
+        //         {
+        //             pom = this->data_[i * this->cols_ + j] - 128;
+        //             this->data_[i * this->cols_ + j] = 128 - pom;
+        //         }
+        //         else if(this->data_[i * this->cols_ + j] < 128)
+        //         {
+        //             pom = 128 - this->data_[i * this->cols_ + j];
+        //             this->data_[i * this->cols_ + j] = 128 + pom; 
+        //         }
+        //     }
+        // }
+        for(auto& pixel : data_)
+        {
+            if (pixel > 128)
+            {
+               // pom = pixel - 128;
+                pixel = 128 - (pixel - 128);
+            }
+            else if (pixel < 128)
+            {
+                //pom = 128 - pixel;
+                pixel = 128 + (128 - pixel);
+            }
+            
+        }
+
+        // for (int i=0; i<data_.size(); i++)
+        // {
+        //     float pixel = data_[i];
+        //     pixel = pixel + 1;
+        // }
+
+        // for(auto pixel : data_)
+        // {
+        // pixel = pixel + 1;
+        // }
+
+        // for (int i=0; i<data_.size(); i++)
+        // {
+        //     // 1
+        //     data_[i] = data_[i] + 1;
+        // }
+
+        
     }
 
     // bool ReadFromDisk(const std::string& file_name)
