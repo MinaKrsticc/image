@@ -19,16 +19,19 @@ int main()
     image.at(3, 3) = pom;
     cout << "image.at(3, 3) = pom je " << image.at(3, 3) <<endl;
     cout << "jedan element je image.at(3, 4) " << value << endl;
-    //bool read = true;
-    //const string fileName = "../data/lena.ascii.pgm";
-    //read = image.FillFromPgm(fileName);
-   // cout <<"read koji je bool kazuje da li je lepo procitano " << read << endl;
-  //  image.WriteToPgm(fileName);
-    std::vector<float> vect;
-    vect = image.ComputeHistogram(4);
-    for (int i = 0; i < 4; i++)
-    {
-        cout<< vect[i] <<endl;
-    }
+    
+    // std::vector<float> vect;
+    // vect = image.ComputeHistogram(4);
+    // for (int i = 0; i < 4; i++)
+    // {
+    //     cout<< vect[i] <<endl;
+    // }
+
+    bool read = true;
+    const string fileName = "../data/lena.ascii.pgm";
+    read = image.FillFromPgm(fileName);
+    cout <<"read koji je bool kazuje da li je lepo procitano " << read << endl;
+    image.UpScale(2);
+    image.WriteToPgm("../data/lena.asciiUpScale.pgm");
     return 0;
 }

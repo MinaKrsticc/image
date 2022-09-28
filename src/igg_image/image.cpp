@@ -145,7 +145,7 @@ namespace igg
         }
         return vec;
     }
-
+        
     void Image::DownScale(int scale)
     {
         int p = 0;
@@ -156,33 +156,58 @@ namespace igg
         {   
             for (int i = 0; i < this->rows_; i+=scale)
             {
-            for (int j = 0; j < this->cols_; j++)
-            {
-                if (i == step || j == step) 
+                for (int j = 0; j < this->cols_; j++)
                 {
-                    for (int im = i; im < i + step ; im++)
+                    if (i == step || j == step) 
                     {
-                        for (int jm = j; jm < j + step ; jm++)
+                        for (int im = i; im < i + step ; im++)
                         {
-                            pom = pom + this->at(im,jm); //treba da se nesto uradi , da se pikseli obradjuju
+                            for (int jm = j; jm < j + step ; jm++)
+                            {
+                                pom = pom + this->at(im,jm); //treba da se nesto uradi, da se pikseli obradjuju
+                            }
                         }
-                    }
-                    int prosek = pom / (scale * scale);
-                    vec[p] = prosek;
-                    p++;
-                    if (step + scale < this->rows_)
-                    {
-                    step = step + scale;
-                    }                        
-                } 
+                        int prosek = pom / (scale * scale);
+                        vec[p] = prosek;
+                        p++;
+                        if (step + scale < this->rows_)
+                        {
+                        step = step + scale;
+                        }                        
+                    } 
+                }
             }
         }
     }
 
     void Image::UpScale(int scale)
     {
+        std::vector<int> vec((scale * this->rows_) * (scale * this->cols_));
+        int big_cols_ = this->cols_ * scale;
 
+        for (int im = 0; im < this->rows_; im++)
+        {
+            for (int jm = 0; jm < this->cols_; jm++)
+            {
+                int indexi = im * scale;
+                int indexj = jm * scale;
+                while (indexi < ((im * scale) + scale))
+                {
+                    while (indexj < ((jm + 1) * scale))
+                    {
+                        vec[indexi * big_cols_ + indexj] = this->at(im, jm);
+                        indexj++;
+                    }
+                    indexj = jm * scale;
+                    indexi++;
+                }
+            }
+        }
+        this->rows_ = big_cols_;
+        this->cols_ = big_cols_;
+        this->data_ = vec;
     }
+
     // bool ReadFromDisk(const std::string& file_name)
     // {
     //     string my_line;
